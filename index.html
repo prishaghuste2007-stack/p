@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design Basics — Luxury Interiors, Mumbai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --cream: #f5f0e8;
+    --warm-white: #faf8f4;
+    --charcoal: #1a1814;
+    --mid: #3d3830;
+    --gold: #b89a6a;
+    --gold-light: #d4b896;
+    --dust: #e8e0d0;
+    --accent: #8b6f47;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--charcoal);
+    color: var(--cream);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom Cursor */
+  .cursor {
+    position: fixed;
+    width: 8px; height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease;
+    mix-blend-mode: normal;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1px solid var(--gold-light);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0.6;
+    transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94), width 0.3s, height 0.3s;
+  }
+  .cursor-ring.expand { width: 60px; height: 60px; opacity: 0.3; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 4rem;
+    mix-blend-mode: normal;
+  }
+  nav::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, rgba(26,24,20,0.95) 0%, transparent 100%);
+    z-index: -1;
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--cream);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-links {
+    display: flex;
+    gap: 3rem;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--cream);
+    text-decoration: none;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    font-weight: 400;
+    opacity: 0.7;
+    transition: opacity 0.3s, color 0.3s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0;
+    width: 0; height: 1px;
+    background: var(--gold);
+    transition: width 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+  }
+  .nav-links a:hover { opacity: 1; color: var(--gold); }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 6rem 4rem;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(135deg, rgba(26,24,20,0.85) 0%, rgba(26,24,20,0.3) 60%, rgba(26,24,20,0.7) 100%),
+      url('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1800&q=80') center/cover no-repeat;
+    transform: scale(1.05);
+    animation: heroZoom 20s ease-in-out infinite alternate;
+  }
+  @keyframes heroZoom {
+    from { transform: scale(1.05); }
+    to { transform: scale(1.12); }
+  }
+  .hero-eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 0.4s;
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(4rem, 8vw, 9rem);
+    font-weight: 300;
+    line-height: 0.95;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 0.7s;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold-light);
+    display: block;
+  }
+  .hero-sub {
+    max-width: 420px;
+    font-size: 0.85rem;
+    line-height: 1.8;
+    opacity: 0;
+    color: rgba(245,240,232,0.7);
+    animation: fadeUp 1s ease forwards 1.1s;
+    margin-bottom: 3rem;
+  }
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--cream);
+    text-decoration: none;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-weight: 400;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 1.4s;
+    transition: color 0.3s;
+  }
+  .hero-cta::after {
+    content: '';
+    display: block;
+    width: 60px; height: 1px;
+    background: var(--gold);
+    transition: width 0.4s ease;
+  }
+  .hero-cta:hover { color: var(--gold); }
+  .hero-cta:hover::after { width: 100px; }
+  .hero-stats {
+    position: absolute;
+    right: 4rem; bottom: 6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    text-align: right;
+    opacity: 0;
+    animation: fadeLeft 1s ease forwards 1.5s;
+  }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.8rem;
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    opacity: 0.5;
+    margin-top: 0.3rem;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeLeft {
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  /* MARQUEE */
+  .marquee-strip {
+    overflow: hidden;
+    border-top: 1px solid rgba(184,154,106,0.3);
+    border-bottom: 1px solid rgba(184,154,106,0.3);
+    padding: 1rem 0;
+    background: rgba(184,154,106,0.06);
+  }
+  .marquee-track {
+    display: flex;
+    gap: 0;
+    animation: marquee 30s linear infinite;
+    white-space: nowrap;
+  }
+  .marquee-item {
+    flex-shrink: 0;
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding: 0 3rem;
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+  }
+  .marquee-item::after {
+    content: '✦';
+    font-size: 0.5rem;
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* SECTION STYLES */
+  section { padding: 8rem 4rem; }
+
+  .section-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 30px; height: 1px;
+    background: var(--gold);
+  }
+
+  /* ABOUT */
+  #about {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8rem;
+    align-items: center;
+    background: var(--charcoal);
+    position: relative;
+  }
+  #about::before {
+    content: 'DB';
+    position: absolute;
+    right: 3rem; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18rem;
+    font-weight: 300;
+    color: rgba(184,154,106,0.04);
+    pointer-events: none;
+    z-index: 0;
+    line-height: 1;
+  }
+  .about-content { position: relative; z-index: 1; }
+  .about-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 4vw, 4.5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 2rem;
+  }
+  .about-title em { font-style: italic; color: var(--gold-light); }
+  .about-body {
+    font-size: 0.88rem;
+    line-height: 2;
+    color: rgba(245,240,232,0.65);
+    margin-bottom: 2rem;
+  }
+  .about-founders {
+    display: flex;
+    gap: 3rem;
+    margin-top: 3rem;
+  }
+  .founder {
+    flex: 1;
+    padding: 1.5rem;
+    border: 1px solid rgba(184,154,106,0.2);
+    position: relative;
+    transition: border-color 0.4s;
+  }
+  .founder::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 0;
+    background: var(--gold);
+    transition: height 0.4s ease;
+  }
+  .founder:hover { border-color: rgba(184,154,106,0.5); }
+  .founder:hover::before { height: 100%; }
+  .founder-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+    color: var(--gold-light);
+  }
+  .founder-desc {
+    font-size: 0.78rem;
+    line-height: 1.8;
+    color: rgba(245,240,232,0.55);
+  }
+  .about-visual {
+    position: relative;
+    z-index: 1;
+  }
+  .about-img-main {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    filter: saturate(0.8) contrast(1.05);
+  }
+  .about-img-accent {
+    position: absolute;
+    bottom: -2rem; left: -2rem;
+    width: 55%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border: 6px solid var(--charcoal);
+    filter: saturate(0.8);
+  }
+  .est-badge {
+    position: absolute;
+    top: 2rem; right: -1.5rem;
+    background: var(--gold);
+    color: var(--charcoal);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.6rem 1.2rem;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-weight: 600;
+  }
+
+  /* SERVICES */
+  #services {
+    background: var(--warm-white);
+    color: var(--charcoal);
+  }
+  #services .section-label { color: var(--accent); }
+  #services .section-label::before { background: var(--accent); }
+  .services-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 5rem;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+  .services-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--charcoal);
+  }
+  .services-title em { font-style: italic; color: var(--accent); }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 1px solid rgba(26,24,20,0.1);
+  }
+  .service-card {
+    padding: 3rem 2.5rem;
+    border-right: 1px solid rgba(26,24,20,0.1);
+    border-bottom: 1px solid rgba(26,24,20,0.1);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.5s;
+    cursor: default;
+  }
+  .service-card:nth-child(3n) { border-right: none; }
+  .service-card:nth-last-child(-n+3) { border-bottom: none; }
+  .service-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--charcoal);
+    transform: translateY(100%);
+    transition: transform 0.5s cubic-bezier(0.76,0,0.24,1);
+    z-index: 0;
+  }
+  .service-card:hover::after { transform: translateY(0); }
+  .service-card > * { position: relative; z-index: 1; }
+  .service-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    margin-bottom: 1.5rem;
+    transition: color 0.3s;
+  }
+  .service-card:hover .service-num { color: var(--gold); }
+  .service-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+    color: var(--charcoal);
+    transition: color 0.3s;
+  }
+  .service-card:hover .service-name { color: var(--cream); }
+  .service-desc {
+    font-size: 0.78rem;
+    line-height: 1.9;
+    color: rgba(26,24,20,0.55);
+    transition: color 0.3s;
+  }
+  .service-card:hover .service-desc { color: rgba(245,240,232,0.6); }
+  .service-arrow {
+    position: absolute;
+    bottom: 2rem; right: 2rem;
+    font-size: 1.5rem;
+    color: var(--accent);
+    opacity: 0;
+    transform: translate(-10px, 10px);
+    transition: opacity 0.3s, transform 0.3s, color 0.3s;
+  }
+  .service-card:hover .service-arrow { opacity: 1; transform: translate(0,0); color: var(--gold); }
+
+  /* PROJECTS */
+  #projects {
+    background: var(--charcoal);
+    padding-bottom: 6rem;
+  }
+  .projects-intro {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 4rem;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+  .projects-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    font-weight: 300;
+    line-height: 1.1;
+  }
+  .projects-title em { font-style: italic; color: var(--gold-light); }
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 1.5px;
+  }
+  .project-card {
+    position: relative;
+    overflow: hidden;
+    background: var(--mid);
+    cursor: pointer;
+  }
+  .project-card:first-child {
+    grid-row: span 2;
+  }
+  .project-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94), filter 0.5s;
+    filter: saturate(0.75) brightness(0.85);
+    min-height: 280px;
+  }
+  .project-card:first-child img { min-height: 600px; }
+  .project-card:hover img {
+    transform: scale(1.08);
+    filter: saturate(1) brightness(0.75);
+  }
+  .project-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(26,24,20,0.95) 0%, transparent 50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 2.5rem;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .project-card:hover .project-overlay { opacity: 1; }
+  .project-category {
+    font-size: 0.58rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+  .project-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 300;
+  }
+  .project-tag {
+    position: absolute;
+    top: 1.5rem; left: 1.5rem;
+    font-size: 0.58rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    background: rgba(184,154,106,0.2);
+    border: 1px solid rgba(184,154,106,0.4);
+    color: var(--gold-light);
+    padding: 0.4rem 1rem;
+    backdrop-filter: blur(10px);
+  }
+
+  /* PHILOSOPHY */
+  .philosophy {
+    background: var(--mid);
+    text-align: center;
+    padding: 8rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .philosophy::before {
+    content: '"';
+    position: absolute;
+    top: -2rem; left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 30rem;
+    color: rgba(184,154,106,0.05);
+    line-height: 1;
+    pointer-events: none;
+  }
+  .philosophy-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 4rem);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.4;
+    max-width: 900px;
+    margin: 0 auto 2rem;
+    color: var(--cream);
+    position: relative;
+    z-index: 1;
+  }
+  .philosophy-quote em { color: var(--gold-light); font-style: normal; }
+  .philosophy-attr {
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* PROCESS */
+  #process {
+    background: var(--warm-white);
+    color: var(--charcoal);
+  }
+  #process .section-label { color: var(--accent); }
+  #process .section-label::before { background: var(--accent); }
+  .process-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    font-weight: 300;
+    margin-bottom: 5rem;
+  }
+  .process-title em { font-style: italic; color: var(--accent); }
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+  }
+  .process-steps::before {
+    content: '';
+    position: absolute;
+    top: 1.8rem; left: 5%;
+    width: 90%; height: 1px;
+    background: linear-gradient(to right, transparent, var(--accent), transparent);
+    opacity: 0.3;
+  }
+  .process-step {
+    padding: 0 2rem 3rem 0;
+    position: relative;
+  }
+  .step-dot {
+    width: 12px; height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    margin-bottom: 2.5rem;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 0 0 4px rgba(139,111,71,0.15);
+  }
+  .step-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 300;
+    color: rgba(26,24,20,0.08);
+    line-height: 1;
+    margin-bottom: -0.5rem;
+  }
+  .step-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin-bottom: 0.75rem;
+    color: var(--charcoal);
+  }
+  .step-desc {
+    font-size: 0.78rem;
+    line-height: 1.9;
+    color: rgba(26,24,20,0.5);
+  }
+
+  /* MEDIA / FEATURE */
+  #media {
+    background: var(--charcoal);
+    padding: 8rem 4rem;
+  }
+  .media-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    margin-top: 4rem;
+  }
+  .media-text .section-label { margin-bottom: 2rem; }
+  .media-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3vw, 3rem);
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+  }
+  .media-body {
+    font-size: 0.85rem;
+    line-height: 2;
+    color: rgba(245,240,232,0.6);
+    margin-bottom: 2rem;
+  }
+  .media-visual {
+    position: relative;
+  }
+  .media-img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    filter: saturate(0.7);
+  }
+  .book-badge {
+    position: absolute;
+    top: -1.5rem; right: -1.5rem;
+    background: var(--gold);
+    color: var(--charcoal);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 1rem 1.5rem;
+    font-weight: 500;
+    text-align: center;
+    max-width: 120px;
+    line-height: 1.6;
+  }
+
+  /* CONTACT */
+  #contact {
+    background: var(--cream);
+    color: var(--charcoal);
+    padding: 8rem 4rem;
+  }
+  .contact-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8rem;
+    align-items: start;
+  }
+  .contact-info .section-label { color: var(--accent); }
+  .contact-info .section-label::before { background: var(--accent); }
+  .contact-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 4vw, 4.5rem);
+    font-weight: 300;
+    margin-bottom: 3rem;
+    line-height: 1.1;
+  }
+  .contact-title em { font-style: italic; color: var(--accent); }
+  .contact-details { display: flex; flex-direction: column; gap: 2rem; }
+  .contact-item label {
+    display: block;
+    font-size: 0.58rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .contact-item p, .contact-item a {
+    font-size: 0.9rem;
+    color: var(--charcoal);
+    text-decoration: none;
+    line-height: 1.7;
+    opacity: 0.75;
+    transition: opacity 0.3s, color 0.3s;
+  }
+  .contact-item a:hover { color: var(--accent); opacity: 1; }
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+  .form-group label {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--mid);
+    opacity: 0.6;
+  }
+  .form-group input, .form-group textarea, .form-group select {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(26,24,20,0.2);
+    padding: 0.8rem 0;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: var(--charcoal);
+    outline: none;
+    transition: border-color 0.3s;
+    -webkit-appearance: none;
+  }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    border-color: var(--accent);
+  }
+  .form-group textarea { resize: none; height: 80px; }
+  .submit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.2rem;
+    background: var(--charcoal);
+    color: var(--cream);
+    border: none;
+    padding: 1.2rem 3rem;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.4s, gap 0.3s;
+    font-weight: 400;
+    margin-top: 0.5rem;
+    align-self: flex-start;
+  }
+  .submit-btn:hover { background: var(--accent); gap: 2rem; }
+  .submit-btn::after { content: '→'; font-size: 1rem; }
+
+  /* FOOTER */
+  footer {
+    background: var(--charcoal);
+    border-top: 1px solid rgba(184,154,106,0.15);
+    padding: 3rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--cream);
+  }
+  .footer-logo span { color: var(--gold); }
+  .footer-copy {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    opacity: 0.35;
+    text-transform: uppercase;
+  }
+  .footer-social {
+    display: flex;
+    gap: 1.5rem;
+  }
+  .footer-social a {
+    color: rgba(245,240,232,0.4);
+    text-decoration: none;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .footer-social a:hover { color: var(--gold); }
+
+  /* SCROLL REVEAL */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.15s; }
+  .reveal-delay-2 { transition-delay: 0.3s; }
+  .reveal-delay-3 { transition-delay: 0.45s; }
+
+  /* MOBILE */
+  @media (max-width: 900px) {
+    nav { padding: 1.5rem 2rem; }
+    .nav-links { display: none; }
+    section { padding: 5rem 2rem; }
+    .hero { padding: 4rem 2rem; }
+    .hero-stats { display: none; }
+    #about { grid-template-columns: 1fr; gap: 3rem; }
+    .about-img-accent { display: none; }
+    .services-grid { grid-template-columns: 1fr; }
+    .service-card:nth-child(3n) { border-right: 1px solid rgba(26,24,20,0.1); }
+    .service-card { border-right: 1px solid rgba(26,24,20,0.1); }
+    .projects-grid { grid-template-columns: 1fr; }
+    .project-card:first-child { grid-row: span 1; }
+    .process-steps { grid-template-columns: 1fr 1fr; }
+    .media-grid { grid-template-columns: 1fr; }
+    .contact-wrapper { grid-template-columns: 1fr; gap: 4rem; }
+    .form-row { grid-template-columns: 1fr; }
+    footer { flex-direction: column; text-align: center; }
+    .philosophy { padding: 5rem 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Design <span>Basics</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#media">Media</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-eyebrow">Mumbai's Premier Interior Architecture Studio · Est. 2003</div>
+  <h1 class="hero-title">
+    Where Space<br>Becomes
+    <em>Timeless</em>
+  </h1>
+  <p class="hero-sub">Bespoke luxury interiors for residences, hospitality, and commercial spaces — designed where elegance meets enduring function.</p>
+  <a href="#projects" class="hero-cta">View Our Work</a>
+  <div class="hero-stats">
+    <div>
+      <div class="stat-num">23+</div>
+      <div class="stat-label">Years of Excellence</div>
+    </div>
+    <div>
+      <div class="stat-num">5.0</div>
+      <div class="stat-label">Google Rating</div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-track">
+    <div class="marquee-item">Luxury Residences</div>
+    <div class="marquee-item">Turnkey Projects</div>
+    <div class="marquee-item">Bespoke Furniture</div>
+    <div class="marquee-item">Hospitality Design</div>
+    <div class="marquee-item">Space Planning</div>
+    <div class="marquee-item">Custom Interiors</div>
+    <div class="marquee-item">Project Management</div>
+    <div class="marquee-item">Luxury Residences</div>
+    <div class="marquee-item">Turnkey Projects</div>
+    <div class="marquee-item">Bespoke Furniture</div>
+    <div class="marquee-item">Hospitality Design</div>
+    <div class="marquee-item">Space Planning</div>
+    <div class="marquee-item">Custom Interiors</div>
+    <div class="marquee-item">Project Management</div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-visual reveal">
+    <img class="about-img-main" src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&q=80" alt="Design Basics Interior">
+    <img class="about-img-accent" src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&q=80" alt="Detail">
+    <div class="est-badge">Est. 2003</div>
+  </div>
+  <div class="about-content">
+    <div class="section-label reveal">Our Story</div>
+    <h2 class="about-title reveal reveal-delay-1">
+      Two Decades of<br><em>Crafted Spaces</em>
+    </h2>
+    <p class="about-body reveal reveal-delay-2">
+      Founded in 2003 by <strong>Rohit & Dipali Ghuste</strong>, both alumni of Rachana Sansad Mumbai, Design Basics has grown over 23 years into one of Mumbai's most distinguished luxury interior studios. We specialize in creating sophisticated, bespoke environments that seamlessly blend aesthetics with functionality — reflecting the unique aspirations of those who live and work within them.
+    </p>
+    <p class="about-body reveal reveal-delay-2">
+      Our commitment to excellence, deep understanding of spatial composition, and meticulous attention to every element have earned us a reputation for timeless, tailor-made interiors that stand the test of time.
+    </p>
+    <div class="about-founders reveal reveal-delay-3">
+      <div class="founder">
+        <div class="founder-name">Rohit Ghuste</div>
+        <p class="founder-desc">An exceptional command of spatial flow, proportions, and design harmony — crafting modern spaces that balance aesthetics with comfort.</p>
+      </div>
+      <div class="founder">
+        <div class="founder-name">Dipali Ghuste</div>
+        <p class="founder-desc">An extraordinary eye for texture, color, and intricate detailing — bringing depth and distinctive character to every space.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<div class="philosophy">
+  <p class="philosophy-quote reveal">
+    "God lies in the details — it is the details that take design from <em>beautiful</em> to breathtaking."
+  </p>
+  <div class="philosophy-attr reveal reveal-delay-1">— Design Basics, Mumbai</div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-header">
+    <div>
+      <div class="section-label reveal">What We Offer</div>
+      <h2 class="services-title reveal reveal-delay-1">Our <em>Services</em></h2>
+    </div>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-num">01</div>
+      <div class="service-name">Interior Design</div>
+      <p class="service-desc">Crafting luxury interiors that reflect the client's vision, lifestyle, and functional needs through unique design concepts that blend elegance with timeless aesthetics.</p>
+      <div class="service-arrow">↗</div>
+    </div>
+    <div class="service-card reveal reveal-delay-1">
+      <div class="service-num">02</div>
+      <div class="service-name">Space Planning</div>
+      <p class="service-desc">Strategically optimizing layouts for maximum efficiency, comfort, and visual appeal — ensuring seamless flow between spaces while enhancing usability.</p>
+      <div class="service-arrow">↗</div>
+    </div>
+    <div class="service-card reveal reveal-delay-2">
+      <div class="service-num">03</div>
+      <div class="service-name">Turnkey Projects</div>
+      <p class="service-desc">Complete end-to-end solutions from concept development to final execution, managing every aspect including design, procurement, and construction.</p>
+      <div class="service-arrow">↗</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-num">04</div>
+      <div class="service-name">Project Management</div>
+      <p class="service-desc">Overseeing all phases of design and execution to maintain quality, timelines, and budget — coordinating with contractors, vendors, and craftsmen.</p>
+      <div class="service-arrow">↗</div>
+    </div>
+    <div class="service-card reveal reveal-delay-1">
+      <div class="service-num">05</div>
+      <div class="service-name">Custom Furniture</div>
+      <p class="service-desc">Bespoke furniture designed to complement interiors and reflect the client's personal style, paired with unique décor that adds character and refinement.</p>
+      <div class="service-arrow">↗</div>
+    </div>
+    <div class="service-card reveal reveal-delay-2">
+      <div class="service-num">06</div>
+      <div class="service-name">Consultation</div>
+      <p class="service-desc">Expert insights and professional recommendations on interior design, current trends, and space optimization — guiding your project from vision to reality.</p>
+      <div class="service-arrow">↗</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="projects-intro">
+    <div>
+      <div class="section-label reveal">Our Portfolio</div>
+      <h2 class="projects-title reveal reveal-delay-1">Selected <em>Projects</em></h2>
+    </div>
+  </div>
+  <div class="projects-grid reveal">
+    <div class="project-card">
+      <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=900&q=80" alt="Luxury Residence">
+      <div class="project-tag">Signature Work</div>
+      <div class="project-overlay">
+        <div class="project-category">Residential</div>
+        <div class="project-name">Lodha Bellissimo — 43rd Floor Residence</div>
+      </div>
+    </div>
+    <div class="project-card">
+      <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=700&q=80" alt="Commercial">
+      <div class="project-overlay">
+        <div class="project-category">Commercial</div>
+        <div class="project-name">Ocean Chemicals Office</div>
+      </div>
+    </div>
+    <div class="project-card">
+      <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=700&q=80" alt="Luxury Interior">
+      <div class="project-overlay">
+        <div class="project-category">Residential</div>
+        <div class="project-name">Luxury Living Spaces</div>
+      </div>
+    </div>
+    <div class="project-card">
+      <img src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=700&q=80" alt="Hospitality">
+      <div class="project-overlay">
+        <div class="project-category">Hospitality</div>
+        <div class="project-name">Contemporary Retreat</div>
+      </div>
+    </div>
+    <div class="project-card">
+      <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=700&q=80" alt="Kitchen Design">
+      <div class="project-overlay">
+        <div class="project-category">Residential</div>
+        <div class="project-name">Refined Kitchens</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="section-label reveal">How We Work</div>
+  <h2 class="process-title reveal reveal-delay-1">From <em>Vision</em><br>To Reality</h2>
+  <div class="process-steps">
+    <div class="process-step reveal">
+      <div class="step-dot"></div>
+      <div class="step-num">01</div>
+      <div class="step-name">Consultation</div>
+      <p class="step-desc">A deep dialogue about your aspirations, lifestyle, and functional needs — where your vision takes shape.</p>
+    </div>
+    <div class="process-step reveal reveal-delay-1">
+      <div class="step-dot"></div>
+      <div class="step-num">02</div>
+      <div class="step-name">Concept Design</div>
+      <p class="step-desc">We develop bespoke design concepts — spatial layouts, material palettes, and mood boards that define the soul of your space.</p>
+    </div>
+    <div class="process-step reveal reveal-delay-2">
+      <div class="step-dot"></div>
+      <div class="step-num">03</div>
+      <div class="step-name">Execution</div>
+      <p class="step-desc">Our dedicated project coordinators oversee every stage, ensuring flawless implementation and adherence to timelines.</p>
+    </div>
+    <div class="process-step reveal reveal-delay-3">
+      <div class="step-dot"></div>
+      <div class="step-num">04</div>
+      <div class="step-name">Handover</div>
+      <p class="step-desc">The final reveal — a space that is uniquely yours, delivered with uncompromising quality and lasting elegance.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MEDIA -->
+<section id="media">
+  <div class="section-label reveal">Press & Recognition</div>
+  <div class="media-grid">
+    <div class="media-text">
+      <h2 class="media-title reveal">Featured in <em>Creative Indian Offices</em> Coffee Table Book</h2>
+      <p class="media-body reveal reveal-delay-1">Design Basics was prominently featured for our work on Ocean Chemicals — a 205 sq. meter Mumbai office designed on the philosophy of 'less is more.' Glass partitions replacing primary walls lend fluidity and visual connectivity, while a controlled use of mustard on a monochromatic palette delivers a suave, refined result.</p>
+      <p class="media-body reveal reveal-delay-1">The project stands as a study in strong lines, intuitive color theory, and intelligent spatial planning — hallmarks of our commercial design approach.</p>
+    </div>
+    <div class="media-visual reveal reveal-delay-2">
+      <img class="media-img" src="https://images.unsplash.com/photo-1497366412874-3415097a27e7?w=800&q=80" alt="Featured Office Design">
+      <div class="book-badge">Creative Indian Offices Coffee Table Book</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-wrapper">
+    <div class="contact-info">
+      <div class="section-label reveal">Get In Touch</div>
+      <h2 class="contact-title reveal reveal-delay-1">Let's Begin <em>Your</em> Story</h2>
+      <div class="contact-details">
+        <div class="contact-item reveal reveal-delay-2">
+          <label>Our Studio</label>
+          <p>Design Basics, 801 Lotus Trade Center<br>D.N. Nagar, Next to Audi Showroom<br>Andheri West, Mumbai — 400102</p>
+        </div>
+        <div class="contact-item reveal reveal-delay-2">
+          <label>Reach Rohit</label>
+          <a href="tel:+919820076199">+91 98200 76199</a>
+        </div>
+        <div class="contact-item reveal reveal-delay-2">
+          <label>Reach Dipali</label>
+          <a href="tel:+919820306306">+91 98203 06306</a>
+        </div>
+        <div class="contact-item reveal reveal-delay-3">
+          <label>Email Us</label>
+          <a href="mailto:rohitghuste@designbasics.in">rohitghuste@designbasics.in</a>
+          <a href="mailto:dipalighuste@designbasics.in">dipalighuste@designbasics.in</a>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form reveal reveal-delay-1">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" placeholder="Full name">
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" placeholder="+91 00000 00000">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Project Type</label>
+        <select>
+          <option value="">Select a service</option>
+          <option>Residential Interior Design</option>
+          <option>Commercial Interior Design</option>
+          <option>Turnkey Project</option>
+          <option>Space Planning</option>
+          <option>Custom Furniture</option>
+          <option>Consultation</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Tell Us About Your Vision</label>
+        <textarea placeholder="Describe your project, timeline, or any questions..."></textarea>
+      </div>
+      <button class="submit-btn">Send Enquiry</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Design <span>Basics</span></div>
+  <div class="footer-copy">© 2025 Design Basics. All Rights Reserved.</div>
+  <div class="footer-social">
+    <a href="https://www.instagram.com/designbasicsinteriors" target="_blank">Instagram</a>
+    <a href="http://facebook.com/designbasicsmumbai" target="_blank">Facebook</a>
+    <a href="https://in.pinterest.com/dipalighuste" target="_blank">Pinterest</a>
+    <a href="https://www.linkedin.com/in/dipali-ghuste-39003054" target="_blank">LinkedIn</a>
+  </div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx - 4 + 'px';
+    cursor.style.top = my - 4 + 'px';
+  });
+  function animateRing() {
+    rx += (mx - rx - 18) * 0.12;
+    ry += (my - ry - 18) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+  document.querySelectorAll('a, button, .service-card, .project-card, .founder').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('expand'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('expand'));
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
